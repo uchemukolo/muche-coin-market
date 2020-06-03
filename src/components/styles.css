@@ -1,0 +1,11 @@
+.nav-link{
+  color: black !important;
+  font-weight: 500;
+}
+.nav-link:hover{
+  color: grey !important;
+}
+.title-section{
+  text-align: center;
+  font-weight: 700;
+}
