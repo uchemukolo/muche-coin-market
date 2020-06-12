@@ -1,3 +1,6 @@
+body {
+  font-size: 14px !important;
+}
 .nav-link{
   color: black !important;
   font-weight: 500;
@@ -8,4 +11,21 @@
 .title-section{
   text-align: center;
   font-weight: 700;
+}
+.table-hover tbody tr:hover {
+  color: #212529;
+  background-color: #eff0ef !important;
+}
+.price-up {
+  background-color: #7eff94;
+}
+.price-down {
+  background-color: #f7c2bf;
+}
+
+.change24-up {
+  color: #209902;
+}
+.change24-down {
+  color: #ff2020;
 }

@@ -1,33 +1,60 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router'
 import NumberFormat from 'react-number-format';
 import './styles.css';
-import { Table, Button, Row } from 'reactstrap';
+import { Table, Button, Row, Modal, ModalBody, ModalFooter} from 'reactstrap';
 import {fetchCoinsAction} from '../actions/fetchCoinsAction';
+import {fetchCoinHistoryAction} from '../actions/fetchCoinHistoryAction';
 import Loader from 'react-loader-spinner';
+import { AreaChart } from 'react-chartkick'
+import 'chart.js'
 
 
 class GetCoins extends Component {
   constructor () {
     super();
     this.state = {
-      coins: [],
-      limit: 20
+      limit: 20,
+      isOpen: false,
     }
   }
 
   componentDidMount() {
-    const { fetchCoinsAction: fetchCoinData} = this.props;
+    const { fetchCoinsAction } = this.props;
+    console.log(window , '-------------------------')
     setInterval(async () => {
-      await fetchCoinData();
+      await fetchCoinsAction();
     }, 3000);
   }
 
+  toggle = async ({ id }) => {
+    await this.props.fetchCoinHistoryAction(id);
+    this.setState({isOpen: !this.state.isOpen})
+  };
+
+  composeChart = () => {
+    const { coinHistory } = this.props;
+    const chartData = [];
+    coinHistory.map(each => {
+      const date = new Date(each.date).toISOString().split('T')[0];
+      const stringDate = date.toString();
+      return chartData.push([ [stringDate], each.priceUsd ])
+    }); 
+    return chartData;
+  }
 
   render () {
-    console.log(this.props)
-    const { coins, isLoading } = this.props;
+    const { coins, isLoading, coinHistory } = this.props;
     const { data } = coins;
+    const changePrice = () => {
+      let oldPrice = [];
+      data && data.map((item) => {
+        oldPrice.push(item.priceUsd);
+        if (item.priceUsd )
+        return item.priceUsd
+      })
+    }
     const onLoadMore = () => {
       this.setState({
           limit: this.state.limit + 20
@@ -46,7 +73,7 @@ class GetCoins extends Component {
           { isLoading ? 
               <Row style={{justifyContent: 'center'}}><Loader
               type="ThreeDots"
-              color="#212529"
+              color="#13b2bc"
               height={40}
               width={40}
               /></Row> :
@@ -67,7 +94,10 @@ class GetCoins extends Component {
               <tbody>
                 {data && data.slice(0,this.state.limit).map((coin, index) => {
                   return (
-                    <tr key={index}>
+                    <tr
+                    key={index}
+                    onClick={() => this.toggle(coin)}
+                    >
                     <td>{coin.rank}</td>
                     <td>{coin.symbol}</td>
                     <td >{coin.name}</td>
@@ -103,7 +133,7 @@ class GetCoins extends Component {
                     thousandSeparator={true}
                     suffix={`${' '} ${coin.symbol}`} />
                     </td>
-                    <td>
+                    <td className={coin.changePercent24Hr > 0 ? 'change24-up' : 'change24-down'}>
                     <NumberFormat
                     value={coin.changePercent24Hr}
                     decimalScale={3}
@@ -118,12 +148,28 @@ class GetCoins extends Component {
               </tbody>
             </Table>
             <Row style={{ justifyContent: 'center', marginBottom: '25px'}}>
-              <Button onClick={onLoadMore} outline color="secondary">Load More...</Button>{' '}
+              <Button onClick={onLoadMore} outline style={{ color: '#ffffff', backgroundColor: '#13b2bc', fontWeight: 'bold'}}>Load More</Button>{' '}
               </Row>
               </>
               }
           </div>
         </div>
+        <Modal isOpen={this.state.isOpen} size='lg'>
+          
+          <ModalBody>
+          <AreaChart
+          colors={["#13b2bc", "#666"]}
+          curve={true}
+          data={this.props.coinHistory.length > 0 && this.composeChart()}
+          prefix="$"
+          xtitle="Date"
+          ytitle="Price"
+          /> 
+        </ModalBody> 
+          <ModalFooter>
+            <Button color="primary" style={{backgroundColor: '#13b2bc', borderColor: '#13b2bc'}} onClick={this.toggle}>Close</Button>
+          </ModalFooter>
+        </Modal>
       </div>
     )
   }
@@ -132,8 +178,9 @@ class GetCoins extends Component {
 const mapStateToProps = state => ({
   coins: state.fetchCoinsReducer.coins,
   isLoading: state.fetchCoinsReducer.isLoading,
+  coinHistory: state.fetchCoinHistoryReducer.coinHistory,
 });
 
 export default connect(mapStateToProps, {
-  fetchCoinsAction
-})(GetCoins);
+  fetchCoinsAction, fetchCoinHistoryAction
+})(withRouter(GetCoins));

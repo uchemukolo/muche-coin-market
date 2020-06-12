@@ -1,5 +1,12 @@
 import axios from 'axios';
-import { FETCH_COINS_SUCCESS, FETCH_COINS_ERROR, IS_LOADING } from './types';
+import {
+    FETCH_COINS_SUCCESS,
+    FETCH_COINS_ERROR,
+    IS_LOADING
+} from './types';
+
+
+const apiKey = process.env.REACT_APP_API_KEY;
 
 export const fetchCoinsSuccess = (payload) => ({
      type: FETCH_COINS_SUCCESS,
@@ -17,8 +24,7 @@ export const fetchCoinsSuccess = (payload) => ({
 
 export const fetchCoinsAction = () => (dispatch) => {
     dispatch(Loading());
-    axios.get(
-        'https://api.coincap.io/v2/assets'
+    axios.get(`https://api.coincap.io/v2/assets`
       ).then((response) => {
         dispatch(fetchCoinsSuccess(response.data));
       }).catch((error) => {
@@ -26,3 +32,5 @@ export const fetchCoinsAction = () => (dispatch) => {
         dispatch(fetchCoinsFailure(error.response));
       });
 };
+
+

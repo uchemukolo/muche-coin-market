@@ -1,25 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { MainNav, MarketTable } from './components';
-import {fetchCoinsAction} from './actions/fetchCoinsAction';
+import React from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
+import Routes from './components/Routes';
 
-class App extends Component {
-  render() { 
-    return (
-      <div>
-        <MainNav/>
-        <MarketTable/>
-      </div>
-    );
-  }
-}
+const App = () => (
+  <BrowserRouter>
+  <Route component={Routes} />
+</BrowserRouter>
+);
  
-// export default App;
-const mapStateToProps = state => ({
-  ...state
- })
- const mapDispatchToProps = dispatch => ({
-  fetchCoinsAction: () => dispatch(fetchCoinsAction())
- })
-
- export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

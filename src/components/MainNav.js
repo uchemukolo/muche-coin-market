@@ -5,7 +5,7 @@ function MainNav() {
   return (
     <div className="container-fluid border">
     <nav className="container navbar navbar-expand-lg navbar-light ">
-    <a className="navbar-brand" href="/"><img src={require('../assets/logo.png')} alt="logo" /></a>
+    <a className="navbar-brand" href="/"><img src={require('../assets/MCM.png')} alt="logo" /></a>
     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="/navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
     </button>
