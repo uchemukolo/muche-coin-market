@@ -4,7 +4,8 @@ import { withRouter } from 'react-router'
 import NumberFormat from 'react-number-format';
 import './styles.css';
 import { Table, Button, Row, Modal, ModalBody, ModalFooter} from 'reactstrap';
-import {fetchCoinsAction} from '../actions/fetchCoinsAction';
+import {fetchCoinsAction } from '../actions/fetchCoinsAction';
+import { getLocatioData } from '../actions/getLocatioDataAction';
 import {fetchCoinHistoryAction} from '../actions/fetchCoinHistoryAction';
 import Loader from 'react-loader-spinner';
 import { AreaChart } from 'react-chartkick'
@@ -20,13 +21,39 @@ class GetCoins extends Component {
     }
   }
 
-  componentDidMount() {
-    const { fetchCoinsAction } = this.props;
-    console.log(window , '-------------------------')
+   async componentDidMount() {
+    const { fetchCoinsAction, getLocatioData } = this.props;
+    await getLocatioData();
     setInterval(async () => {
       await fetchCoinsAction();
     }, 3000);
   }
+
+  // postData = () => {
+  //   const { navigator } = window;
+  //   const { locationData } = this.props;
+  //   const locationDataObject = {locationData}
+  //   console.log('-----locationDataObject-----', locationDataObject)
+
+  //   const analyticData = {
+  //     language: navigator.language,
+  //     platform: navigator.platform,
+  //     userAgent: navigator.userAgent,
+  //     ipAddress: locationData.ip,
+  //     latitude: locationData.latitude,
+  //     longitude: locationData.longitude,
+  //     city: locationData.city,
+  //     country: locationData.country_name
+  //     }
+  //     console.log(analyticData, '-----analyticData-----')
+    // fetch('https://bantu-challenge.herokuapp.com/analytics', {
+    //     method: 'POST',
+    //     headers : new Headers(),
+    //     body:JSON.stringify({analyticData})
+    // }).then((response) => response.json())
+    // .then((data) =>  console.log(data))
+    // .catch((error)=>console.log(error))
+// }
 
   toggle = async ({ id }) => {
     await this.props.fetchCoinHistoryAction(id);
@@ -45,16 +72,24 @@ class GetCoins extends Component {
   }
 
   render () {
-    const { coins, isLoading, coinHistory } = this.props;
+    const { navigator } = window;
+    const { coins, isLoading, locationData } = this.props;
     const { data } = coins;
-    const changePrice = () => {
-      let oldPrice = [];
-      data && data.map((item) => {
-        oldPrice.push(item.priceUsd);
-        if (item.priceUsd )
-        return item.priceUsd
-      })
-    }
+    const locationDataObject = {locationData}
+
+    const analyticData = {
+      language: navigator.language,
+      platform: navigator.platform,
+      userAgent: navigator.userAgent,
+      ipAddress: locationData.ip,
+      latitude: locationData.latitude,
+      longitude: locationData.longitude,
+      city: locationData.city, country:
+      locationData.country_name
+      }
+      // console.log(analyticData, '-----analyticData-----')
+
+
     const onLoadMore = () => {
       this.setState({
           limit: this.state.limit + 20
@@ -179,8 +214,9 @@ const mapStateToProps = state => ({
   coins: state.fetchCoinsReducer.coins,
   isLoading: state.fetchCoinsReducer.isLoading,
   coinHistory: state.fetchCoinHistoryReducer.coinHistory,
+  locationData: state.getLocationReducer.locationData
 });
 
 export default connect(mapStateToProps, {
-  fetchCoinsAction, fetchCoinHistoryAction
+  fetchCoinsAction, fetchCoinHistoryAction, getLocatioData
 })(withRouter(GetCoins));

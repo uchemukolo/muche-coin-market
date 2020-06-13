@@ -26,7 +26,6 @@ export const fetchCoinHistoryAction = coinId => (dispatch) => {
   ).then((response) => {
     const last7dayHistory = response.data && response.data.data.reverse().splice(0, 7);
     const last7dayHistoryReverse = last7dayHistory.reverse();
-    console.log(last7dayHistory)
     dispatch(getCoinHistorySuccess(last7dayHistoryReverse));
   }).catch((error) => {
     dispatch(getCoinHistoryFailure(error.response.data));

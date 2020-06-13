@@ -5,9 +5,6 @@ import {
     IS_LOADING
 } from './types';
 
-
-const apiKey = process.env.REACT_APP_API_KEY;
-
 export const fetchCoinsSuccess = (payload) => ({
      type: FETCH_COINS_SUCCESS,
      payload
@@ -32,5 +29,6 @@ export const fetchCoinsAction = () => (dispatch) => {
         dispatch(fetchCoinsFailure(error.response));
       });
 };
+
 
 
