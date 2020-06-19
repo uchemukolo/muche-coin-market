@@ -11,6 +11,7 @@ import Loader from 'react-loader-spinner';
 import { AreaChart } from 'react-chartkick'
 import 'chart.js'
 
+const newPrices = [];
 
 class GetCoins extends Component {
   constructor () {
@@ -21,39 +22,13 @@ class GetCoins extends Component {
     }
   }
 
-   async componentDidMount() {
-    const { fetchCoinsAction, getLocatioData } = this.props;
-    await getLocatioData();
-    setInterval(async () => {
-      await fetchCoinsAction();
-    }, 3000);
+componentDidMount() {
+  const { fetchCoinsAction } = this.props;
+  setInterval(async () => {
+    fetchCoinsAction();
+  }, 3000);
+
   }
-
-  // postData = () => {
-  //   const { navigator } = window;
-  //   const { locationData } = this.props;
-  //   const locationDataObject = {locationData}
-  //   console.log('-----locationDataObject-----', locationDataObject)
-
-  //   const analyticData = {
-  //     language: navigator.language,
-  //     platform: navigator.platform,
-  //     userAgent: navigator.userAgent,
-  //     ipAddress: locationData.ip,
-  //     latitude: locationData.latitude,
-  //     longitude: locationData.longitude,
-  //     city: locationData.city,
-  //     country: locationData.country_name
-  //     }
-  //     console.log(analyticData, '-----analyticData-----')
-    // fetch('https://bantu-challenge.herokuapp.com/analytics', {
-    //     method: 'POST',
-    //     headers : new Headers(),
-    //     body:JSON.stringify({analyticData})
-    // }).then((response) => response.json())
-    // .then((data) =>  console.log(data))
-    // .catch((error)=>console.log(error))
-// }
 
   toggle = async ({ id }) => {
     await this.props.fetchCoinHistoryAction(id);
@@ -72,24 +47,8 @@ class GetCoins extends Component {
   }
 
   render () {
-    const { navigator } = window;
-    const { coins, isLoading, locationData } = this.props;
+    const { coins, isLoading } = this.props;
     const { data } = coins;
-    const locationDataObject = {locationData}
-
-    const analyticData = {
-      language: navigator.language,
-      platform: navigator.platform,
-      userAgent: navigator.userAgent,
-      ipAddress: locationData.ip,
-      latitude: locationData.latitude,
-      longitude: locationData.longitude,
-      city: locationData.city, country:
-      locationData.country_name
-      }
-      // console.log(analyticData, '-----analyticData-----')
-
-
     const onLoadMore = () => {
       this.setState({
           limit: this.state.limit + 20
@@ -119,11 +78,11 @@ class GetCoins extends Component {
                   <th>#</th>
                   <th></th>
                   <th>Name</th>
-                  <th>Market Cap</th>
-                  <th>Price</th>
+                  <th style={{textAlign: 'right'}}>Market Cap</th>
+                  <th style={{textAlign: 'right'}}>Price</th>
                   <th style={{textAlign: 'right'}}>Volume (24h)</th>
                   <th style={{textAlign: 'right'}}>Circulating Supply</th>
-                  <th>Change (24h)</th>
+                  <th style={{textAlign: 'right'}}>Change (24h)</th>
                 </tr>
               </thead>
               <tbody>
@@ -136,7 +95,7 @@ class GetCoins extends Component {
                     <td>{coin.rank}</td>
                     <td>{coin.symbol}</td>
                     <td >{coin.name}</td>
-                    <td>
+                    <td style={{textAlign: 'right'}}>
                     <NumberFormat
                     value={coin.marketCapUsd}
                     decimalScale={0}
@@ -144,7 +103,7 @@ class GetCoins extends Component {
                     thousandSeparator={true}
                     prefix={'$ '} />
                     </td>
-                    <td>
+                    <td style={{textAlign: 'right'}}>
                     <NumberFormat
                     value={coin.priceUsd}
                     decimalScale={2}
@@ -168,7 +127,7 @@ class GetCoins extends Component {
                     thousandSeparator={true}
                     suffix={`${' '} ${coin.symbol}`} />
                     </td>
-                    <td className={coin.changePercent24Hr > 0 ? 'change24-up' : 'change24-down'}>
+                    <td className={coin.changePercent24Hr > 0 ? 'change24-up' : 'change24-down'} style={{textAlign: 'right'}}>
                     <NumberFormat
                     value={coin.changePercent24Hr}
                     decimalScale={3}

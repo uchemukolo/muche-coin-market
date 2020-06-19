@@ -25,14 +25,14 @@ function MainNav() {
         </li>
         
         <li className="nav-item">
-          <a className="nav-link" href="/"><i class="fas fa-ellipsis-h"></i></a>
+          <a className="nav-link" href="/"><i className="fas fa-ellipsis-h"></i></a>
         </li>
       </ul>
       <span className="navbar-text">
-      <div class="input-group">
-      <input class="form-control py-2 border-right-0 border" type="text" value="search" id="example-search-input"/>
-      <span class="input-group-append">
-          <div class="input-group-text bg-transparent"><i class="fa fa-search"></i></div>
+      <div className="input-group">
+      <input className="form-control py-2 border-right-0 border" type="text" value="search" id="example-search-input"/>
+      <span className="input-group-append">
+          <div className="input-group-text bg-transparent"><i className="fa fa-search"></i></div>
       </span>
   </div>
       </span>
