@@ -11,8 +11,6 @@ import Loader from 'react-loader-spinner';
 import { AreaChart } from 'react-chartkick'
 import 'chart.js'
 
-const newPrices = [];
-
 class GetCoins extends Component {
   constructor () {
     super();
