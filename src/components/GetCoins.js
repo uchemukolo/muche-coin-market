@@ -7,6 +7,7 @@ import { Table, Button, Row, Modal, ModalBody, ModalFooter} from 'reactstrap';
 import {fetchCoinsAction } from '../actions/fetchCoinsAction';
 import { getLocatioData } from '../actions/getLocatioDataAction';
 import {fetchCoinHistoryAction} from '../actions/fetchCoinHistoryAction';
+import { getCoinIconUri } from '../libs/constants';
 import Loader from 'react-loader-spinner';
 import { AreaChart } from 'react-chartkick'
 import 'chart.js'
@@ -74,7 +75,6 @@ componentDidMount() {
               <thead>
                 <tr>
                   <th>#</th>
-                  <th></th>
                   <th>Name</th>
                   <th style={{textAlign: 'right'}}>Market Cap</th>
                   <th style={{textAlign: 'right'}}>Price</th>
@@ -91,8 +91,13 @@ componentDidMount() {
                     onClick={() => this.toggle(coin)}
                     >
                     <td>{coin.rank}</td>
-                    <td>{coin.symbol}</td>
-                    <td >{coin.name}</td>
+                  <td>
+                    <div style={{display: 'flex'}}>
+                    <img style={{width: '30px', height: '30px', marginRight: '10px'}} alt='icon' src={getCoinIconUri(coin.name)} />
+                    <div>
+                      {coin.name}
+                      <p style={{color: '#b5b8bb', fontSize: '12px', marginBottom: '10px'}}>{coin.symbol}</p></div>
+                      </div></td>
                     <td style={{textAlign: 'right'}}>
                     <NumberFormat
                     value={coin.marketCapUsd}

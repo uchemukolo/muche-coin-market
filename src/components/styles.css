@@ -1,6 +1,12 @@
 body {
   font-size: 14px !important;
 }
+.table td {
+  vertical-align: top !important;
+  border-top: 1px solid #dee2e6;
+  padding-bottom: 0 !important;
+  padding-top: .75rem !important;
+}
 .nav-link{
   color: black !important;
   font-weight: 500;
