@@ -9,7 +9,7 @@ import { getLocatioData } from '../actions/getLocatioDataAction';
 import {fetchCoinHistoryAction} from '../actions/fetchCoinHistoryAction';
 import { getCoinIconUri } from '../libs/constants';
 import Loader from 'react-loader-spinner';
-import { AreaChart } from 'react-chartkick'
+import { AreaChart, ColumnChart } from 'react-chartkick'
 import 'chart.js'
 
 class GetCoins extends Component {
@@ -36,6 +36,8 @@ componentDidMount() {
 
   composeChart = () => {
     const { coinHistory } = this.props;
+    console.log(coinHistory)
+
     const chartData = [];
     coinHistory.map(each => {
       const date = new Date(each.date).toISOString().split('T')[0];
@@ -48,7 +50,6 @@ componentDidMount() {
   render () {
     const { coins, isLoading } = this.props;
     const { data } = coins;
-    console.log(data)
     const onLoadMore = () => {
       this.setState({
           limit: this.state.limit + 20
@@ -171,7 +172,10 @@ componentDidMount() {
           prefix="$"
           xtitle="Date"
           ytitle="Price"
-          /> 
+          />
+          <ColumnChart 
+            data={this.props.coinHistory.length > 0 && this.composeChart()}
+            colors={["#13b2bc", "#666"]}/>
         </ModalBody> 
           <ModalFooter>
             <Button color="primary" style={{backgroundColor: '#13b2bc', borderColor: '#13b2bc'}} onClick={this.toggle}>Close</Button>
