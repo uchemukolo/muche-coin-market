@@ -14,9 +14,13 @@ body {
 .nav-link:hover{
   color: grey !important;
 }
-.title-section{
+.title-section {
   text-align: center;
   font-weight: 700;
+  height: 100px;
+  padding-top: 31px;
+  background-color: #13b2bc;
+  color: white;
 }
 .table-hover tbody tr:hover {
   color: #212529;
