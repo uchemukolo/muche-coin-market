@@ -76,7 +76,7 @@ componentDidMount() {
                 <tr>
                   <th>#</th>
                   <th>Name</th>
-                  <th style={{textAlign: 'right'}}>Market Cap</th>
+                  <th style={{textAlign: 'right' }}>Market Cap</th>
                   <th style={{textAlign: 'right'}}>Price</th>
                   <th style={{textAlign: 'right'}}>Volume (24h)</th>
                   <th style={{textAlign: 'right'}}>Circulating Supply</th>
