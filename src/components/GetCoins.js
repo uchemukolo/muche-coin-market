@@ -48,6 +48,7 @@ componentDidMount() {
   render () {
     const { coins, isLoading } = this.props;
     const { data } = coins;
+    console.log(data)
     const onLoadMore = () => {
       this.setState({
           limit: this.state.limit + 20
@@ -79,6 +80,7 @@ componentDidMount() {
                   <th style={{textAlign: 'right' }}>Market Cap</th>
                   <th style={{textAlign: 'right'}}>Price</th>
                   <th style={{textAlign: 'right'}}>Volume (24h)</th>
+                  <th style={{textAlign: 'right'}}>Supply</th>
                   <th style={{textAlign: 'right'}}>Circulating Supply</th>
                   <th style={{textAlign: 'right'}}>Change (24h)</th>
                 </tr>
@@ -117,6 +119,14 @@ componentDidMount() {
                     <td style={{textAlign: 'right'}}>
                     <NumberFormat
                     value={coin.volumeUsd24Hr}
+                    decimalScale={0}
+                    displayType={'text'}
+                    thousandSeparator={true}
+                    suffix={`${' '} ${coin.symbol}`}/>
+                    </td>
+                    <td style={{textAlign: 'right'}}>
+                    <NumberFormat
+                    value={coin.supply}
                     decimalScale={0}
                     displayType={'text'}
                     thousandSeparator={true}
